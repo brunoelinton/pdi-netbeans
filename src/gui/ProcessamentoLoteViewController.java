@@ -34,7 +34,11 @@ import javax.imageio.ImageIO;
 // IMPORTANDO AS TÉCNICAS DE PROCESSAMENTO DE IMAGENS
 import techniques.VonKriesMedia;
 import techniques.VonKriesMediana;
+<<<<<<< HEAD
 import techniques.GrayWorldApproach;
+=======
+import techniques.VonKriesWhitePatch;
+>>>>>>> 740137b0da0a60d5b284049f3d7000b9b2961f00
 
 public class ProcessamentoLoteViewController implements Initializable {
     // LISTA DE IMAGENS
@@ -76,7 +80,11 @@ public class ProcessamentoLoteViewController implements Initializable {
     private CheckBox chkBoxVonKriesMediana;
 
     @FXML
+<<<<<<< HEAD
     private CheckBox chkBoxGrayWorldApproach;
+=======
+    private CheckBox chkBoxOutra;
+>>>>>>> 740137b0da0a60d5b284049f3d7000b9b2961f00
 
     // CONSTRUTOR
     public ProcessamentoLoteViewController() {
@@ -161,12 +169,19 @@ public class ProcessamentoLoteViewController implements Initializable {
     public void onBtProcessar(ActionEvent event) {
         VonKriesMedia tecnicaVonkrieKriesMedia = new VonKriesMedia();
         VonKriesMediana tecnicaVonKriesMediana = new VonKriesMediana();
+<<<<<<< HEAD
         GrayWorldApproach tecnicaGrayWorldApproach = new GrayWorldApproach();
+=======
+        VonKriesWhitePatch tecnicaVonKrieWhitePatch = new VonKriesWhitePatch();
+>>>>>>> 740137b0da0a60d5b284049f3d7000b9b2961f00
 
         BufferedImage imagemOriginal = null;
         BufferedImage imagemProcessada = null;
         int count = 0;
+<<<<<<< HEAD
         
+=======
+>>>>>>> 740137b0da0a60d5b284049f3d7000b9b2961f00
         try {
             for (File file : files) {
                 imagemOriginal = ImageIO.read(new File(file.getAbsolutePath()));
@@ -180,10 +195,17 @@ public class ProcessamentoLoteViewController implements Initializable {
                     imagemProcessada = tecnicaVonKriesMediana.mediana(imagemOriginal);
                     ImageIO.write(imagemProcessada, "PNG", new File(txtFieldDiretorioDestino.getText() + "\\out" + count + "VKMediana.png"));
                 }
+<<<<<<< HEAD
                 if (chkBoxGrayWorldApproach.isSelected()) {
                     System.out.println("White Pacth");
                     imagemProcessada = tecnicaGrayWorldApproach.GWA(imagemOriginal);
                     ImageIO.write(imagemProcessada, "PNG", new File(txtFieldDiretorioDestino.getText() + "\\out" + count + "GWA.png"));
+=======
+                if (chkBoxOutra.isSelected()) {
+                    System.out.println("White Pacth");
+                    imagemProcessada = tecnicaVonKrieWhitePatch.whitePatch(imagemOriginal);
+                    ImageIO.write(imagemProcessada, "PNG", new File(txtFieldDiretorioDestino.getText() + "\\out" + count + "VKWhitePatch.png"));
+>>>>>>> 740137b0da0a60d5b284049f3d7000b9b2961f00
                 }
                 count++;
             }
@@ -208,9 +230,13 @@ public class ProcessamentoLoteViewController implements Initializable {
         borderPane.prefHeightProperty().bind(Main.getMainScene().heightProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A ALTURA DO 'BORDER PANE' DE ACORDO COM A ALTURA DO 'ANCHOR PANE'
         borderPane.prefWidthProperty().bind(Main.getMainScene().widthProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A LARGURA DO 'BORDER PANE' DE ACORDO COM A LARGURA DO 'ANCHOR PANE'
 
+<<<<<<< HEAD
         // btProcessar.disableProperty().bind(listViewImagens.itemsProperty().isNull().or(txtFieldDiretorioDestino.textProperty().isEmpty()).or(chkBoxVonKriesMedia.selectedProperty().not().and(chkBoxVonKriesMediana.selectedProperty().not().and(chkBoxGrayWorldApproach.selectedProperty().not()))));
         btProcessar.disableProperty().bind(listViewImagens.itemsProperty().isNull().or(txtFieldDiretorioOrigem.textProperty().isEmpty()).or(txtFieldDiretorioDestino.textProperty().isEmpty()).or(chkBoxVonKriesMedia.selectedProperty().not().and(chkBoxVonKriesMediana.selectedProperty().not().and(chkBoxGrayWorldApproach.selectedProperty().not()))));
         
+=======
+        btProcessar.disableProperty().bind(listViewImagens.itemsProperty().isNull().or(txtFieldDiretorioDestino.textProperty().isEmpty()).or(chkBoxVonKriesMedia.selectedProperty().not().and(chkBoxVonKriesMediana.selectedProperty().not().and(chkBoxOutra.selectedProperty().not()))));
+>>>>>>> 740137b0da0a60d5b284049f3d7000b9b2961f00
 
     }
 }

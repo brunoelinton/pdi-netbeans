@@ -3,7 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/BEGA/OneDrive/BKP/UFES/Projeto%20IC2/Programa%20-%20NetBeans/PDI/src/gui/ProcessamentoLoteViewController.java</file>
+=======
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/gui/ProcessamentoLoteView.fxml</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/gui/SobreViewController.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/gui/MainView.fxml</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/techniques/VonKriesMediana.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/application/Main.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/gui/util/Utils.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/gui/MainViewController.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/gui/ProcessamentoLoteViewController.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/techniques/VonKriesMedia.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/techniques/VonKriesWhitePatch.java</file>
+            <file>file:/C:/Users/pedro/Desktop/Projetos/pdi-netbeans/pdi-netbeans/src/gui/util/Alerts.java</file>
+>>>>>>> 740137b0da0a60d5b284049f3d7000b9b2961f00
         </group>
     </open-files>
 </project-private>
