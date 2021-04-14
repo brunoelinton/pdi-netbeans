@@ -31,174 +31,186 @@ import javafx.util.Duration;
 
 import javax.imageio.ImageIO;
 
+// IMPORTANDO AS TÉCNICAS DE PROCESSAMENTO DE IMAGENS
 import techniques.VonKriesMedia;
 import techniques.VonKriesMediana;
+import techniques.GrayWorldApproach;
 
-public class ProcessamentoLoteViewController implements Initializable{
-	// LISTA DE IMAGENS
-	List<File> selectedFiles = null;
-	File[] files;
-	
-	@FXML
-	private AnchorPane anchorPane;
-	
-	@FXML
-	private BorderPane borderPane;
+public class ProcessamentoLoteViewController implements Initializable {
+    // LISTA DE IMAGENS
 
-	@FXML
-	private Button btAddImagens;
-	
-	@FXML
-	private ListView<File> listViewImagens;
+    List<File> selectedFiles = null;
+    File[] files;
 
-	@FXML
-	private Button btProcessar;
-	
-	@FXML
-	private Button btCancelar;
-	
-	@FXML
-	private Button btDiretorio;
-	
-	@FXML
-	private TextField txtFieldDiretorioOrigem;
-	
-	@FXML
-	private TextField txtFieldDiretorioDestino;
-	
-	@FXML
-	private CheckBox chkBoxVonKriesMedia;
-	
-	@FXML
-	private CheckBox chkBoxVonKriesMediana;
-	
-	@FXML
-	private CheckBox chkBoxOutra;
-	
-	// CONSTRUTOR
-	public ProcessamentoLoteViewController() {
-		
-	}
-	
-	// MÉTODO PARA CARREGAR OS ARQUIVOS DE IMAGEM
-	@FXML
-	public void onBtAddPastaOrigem() {
-		DirectoryChooser diretorioOrigem = new DirectoryChooser();
-		File diretorioSelecionado = diretorioOrigem.showDialog(null);
-		
-		if(diretorioSelecionado == null) {
-			txtFieldDiretorioOrigem.setText("Seleciona a pasta de destino");
-		} else {
-			txtFieldDiretorioOrigem.setText(diretorioSelecionado.getAbsolutePath());
-			System.out.println(diretorioSelecionado.getPath());
-		}
-		
-		files = diretorioSelecionado.listFiles();
-		if(files != null) {
-			for(File file: files) {
-				listViewImagens.getItems().add(file.getAbsoluteFile());
-			}
-			
-		} else {
-			System.out.println("Error");
-		}
-	}
-	
-	// MÉTODO PARA ADICIONAR A PASTA DE DESTINO DOS ARQUIVOS PROCESSADOS
-	@FXML 
-	public void onBtPastaDestino() {
-		DirectoryChooser diretorioDestino = new DirectoryChooser();
-		File diretorioSelecionado = diretorioDestino.showDialog(null);
-		
-		if(diretorioSelecionado == null) {
-			txtFieldDiretorioDestino.setText("Seleciona a pasta de destino");
-		} else {
-			txtFieldDiretorioDestino.setText(diretorioSelecionado.getAbsolutePath());
-			System.out.println(diretorioSelecionado.getPath());
-		}
-	}
-	
-	// MÉTODO PARA CANCELAR A OPERAÇÃO
-	@FXML
-	public void onBtCancelar() {
-		System.out.println("Exit VonKriesMédia");
-		txtFieldDiretorioOrigem.setText(null);
-		txtFieldDiretorioDestino.setText(null);
-		chkBoxVonKriesMedia.setDisable(true);
-		
-		// DESALOCANDO OS ITENS DO 'listviewImagens' EXIBIDOS NA TELA
-		if (files != null) {
-			for(File file: files) {
-				listViewImagens.getItems().remove(file);
-			}
-			
-			// DESALOCANDO O VETOR DE IMAGENS
-			Arrays.fill(files, null);	// SETANDO CADA POSIÇÃO COMO NULL
-			files = null;				// LIBERANDO O VETOR
-		}
-		try {
-			Parent root = MainViewController.getRoot();
-			Scene scene = Main.getMainScene();
-			root.translateYProperty().set(0);
+    @FXML
+    private AnchorPane anchorPane;
 
-			Timeline timeline = new Timeline();
-	        KeyValue kv = new KeyValue(root.translateYProperty(), scene.getHeight()*2, Interpolator.EASE_IN);
-	        KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);
-	        timeline.getKeyFrames().add(kf);
-	        timeline.play();
-			
-		} catch(IllegalStateException e) {
-			Alerts.showAlert("IO Exception", "Error to calling Von Kries Media Process Image", e.getMessage(), AlertType.ERROR);
-		}
-		
-	}
+    @FXML
+    private BorderPane borderPane;
 
-	// MÉTODO PARA PROCESSAR AS IMAGENS
-	@FXML
-	public void onBtProcessar(ActionEvent event) {
-		VonKriesMedia tecnicaVonkrieKriesMedia = new VonKriesMedia();
-		VonKriesMediana tecnicaVonKriesMediana = new VonKriesMediana();
-		
-		BufferedImage imagemOriginal = null;
-		BufferedImage imagemProcessada = null;
-		int count = 0;
-		try {
-			for(File file: files) {
-				imagemOriginal = ImageIO.read(new File(file.getAbsolutePath()));
-				if(chkBoxVonKriesMedia.isSelected()) {
-					System.out.println("Media");
-					imagemProcessada = tecnicaVonkrieKriesMedia.media(imagemOriginal);
-					ImageIO.write(imagemProcessada, "PNG",new File(txtFieldDiretorioDestino.getText()+"\\out" + count + "VKMedia.png"));
-				}
-				if(chkBoxVonKriesMediana.isSelected()) {
-					System.out.println("Mediana");
-					imagemProcessada = tecnicaVonKriesMediana.mediana(imagemOriginal);
-					ImageIO.write(imagemProcessada, "PNG",new File(txtFieldDiretorioDestino.getText()+"\\out" + count + "VKMediana.png"));
-				}
-				count++;
-			}
-		} catch(IOException e) {
-			e.printStackTrace();
-			Alerts.showAlert("Error", "Error in processing images", e.getMessage(), AlertType.ERROR);
-		}
-	}
-	
-	@FXML
-	public void chkVKMedia() {
-		if(chkBoxVonKriesMedia.isSelected()) {
-			System.out.println("Von Kries Média!");
-		}
-	}
-	
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		//borderPane.prefWidthProperty().bind(anchorPane.widthProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A LARGURA DO 'BORDER PANE' DE ACORDO COM A LARGURA DO 'ANCHOR PANE'
-		//borderPane.prefHeightProperty().bind(anchorPane.heightProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A ALTURA DO 'BORDER PANE' DE ACORDO COM A ALTURA DO 'ANCHOR PANE'
-		
-		borderPane.prefHeightProperty().bind(Main.getMainScene().heightProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A ALTURA DO 'BORDER PANE' DE ACORDO COM A ALTURA DO 'ANCHOR PANE'
-        borderPane.prefWidthProperty().bind(Main.getMainScene().widthProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A LARGURA DO 'BORDER PANE' DE ACORDO COM A LARGURA DO 'ANCHOR PANE'
+    @FXML
+    private Button btAddImagens;
+
+    @FXML
+    private ListView<File> listViewImagens;
+
+    @FXML
+    private Button btProcessar;
+
+    @FXML
+    private Button btCancelar;
+
+    @FXML
+    private Button btDiretorio;
+
+    @FXML
+    private TextField txtFieldDiretorioOrigem;
+
+    @FXML
+    private TextField txtFieldDiretorioDestino;
+
+    @FXML
+    private CheckBox chkBoxVonKriesMedia;
+
+    @FXML
+    private CheckBox chkBoxVonKriesMediana;
+
+    @FXML
+    private CheckBox chkBoxGrayWorldApproach;
+
+    // CONSTRUTOR
+    public ProcessamentoLoteViewController() {
+
+    }
+
+    // MÉTODO PARA CARREGAR OS ARQUIVOS DE IMAGEM
+    @FXML
+    public void onBtAddPastaOrigem() {
+        DirectoryChooser diretorioOrigem = new DirectoryChooser();
+        File diretorioSelecionado = diretorioOrigem.showDialog(null);
+
+        if (diretorioSelecionado == null) {
+            txtFieldDiretorioOrigem.setText("Seleciona a pasta de destino");
+        } else {
+            txtFieldDiretorioOrigem.setText(diretorioSelecionado.getAbsolutePath());
+            System.out.println(diretorioSelecionado.getPath());
+        }
+
+        files = diretorioSelecionado.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                listViewImagens.getItems().add(file.getAbsoluteFile());
+            }
+
+        } else {
+            System.out.println("Error");
+        }
+    }
+
+    // MÉTODO PARA ADICIONAR A PASTA DE DESTINO DOS ARQUIVOS PROCESSADOS
+    @FXML
+    public void onBtPastaDestino() {
+        DirectoryChooser diretorioDestino = new DirectoryChooser();
+        File diretorioSelecionado = diretorioDestino.showDialog(null);
+
+        if (diretorioSelecionado == null) {
+            txtFieldDiretorioDestino.setText("Seleciona a pasta de destino");
+        } else {
+            txtFieldDiretorioDestino.setText(diretorioSelecionado.getAbsolutePath());
+            System.out.println(diretorioSelecionado.getPath());
+        }
+    }
+
+    // MÉTODO PARA CANCELAR A OPERAÇÃO
+    @FXML
+    public void onBtCancelar() {
+        System.out.println("Exit VonKriesMédia");
+        txtFieldDiretorioOrigem.setText(null);
+        txtFieldDiretorioDestino.setText(null);
+        chkBoxVonKriesMedia.setDisable(true);
+
+        // DESALOCANDO OS ITENS DO 'listviewImagens' EXIBIDOS NA TELA
+        if (files != null) {
+            for (File file : files) {
+                listViewImagens.getItems().remove(file);
+            }
+
+            // DESALOCANDO O VETOR DE IMAGENS
+            Arrays.fill(files, null);	// SETANDO CADA POSIÇÃO COMO NULL
+            files = null;				// LIBERANDO O VETOR
+        }
+        try {
+            Parent root = MainViewController.getRoot();
+            Scene scene = Main.getMainScene();
+            root.translateYProperty().set(0);
+
+            Timeline timeline = new Timeline();
+            KeyValue kv = new KeyValue(root.translateYProperty(), scene.getHeight() * 2, Interpolator.EASE_IN);
+            KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+
+        } catch (IllegalStateException e) {
+            Alerts.showAlert("IO Exception", "Error to calling Von Kries Media Process Image", e.getMessage(), AlertType.ERROR);
+        }
+
+    }
+
+    // MÉTODO PARA PROCESSAR AS IMAGENS
+    @FXML
+    public void onBtProcessar(ActionEvent event) {
+        VonKriesMedia tecnicaVonkrieKriesMedia = new VonKriesMedia();
+        VonKriesMediana tecnicaVonKriesMediana = new VonKriesMediana();
+        GrayWorldApproach tecnicaGrayWorldApproach = new GrayWorldApproach();
+
+        BufferedImage imagemOriginal = null;
+        BufferedImage imagemProcessada = null;
+        int count = 0;
         
-		btProcessar.disableProperty().bind(listViewImagens.itemsProperty().isNull().or(txtFieldDiretorioDestino.textProperty().isEmpty()).or(chkBoxVonKriesMedia.selectedProperty().not().and(chkBoxVonKriesMediana.selectedProperty().not())));
-		
-	}
+        try {
+            for (File file : files) {
+                imagemOriginal = ImageIO.read(new File(file.getAbsolutePath()));
+                if (chkBoxVonKriesMedia.isSelected()) {
+                    System.out.println("Media");
+                    imagemProcessada = tecnicaVonkrieKriesMedia.media(imagemOriginal);
+                    ImageIO.write(imagemProcessada, "PNG", new File(txtFieldDiretorioDestino.getText() + "\\out" + count + "VKMedia.png"));
+                }
+                if (chkBoxVonKriesMediana.isSelected()) {
+                    System.out.println("Mediana");
+                    imagemProcessada = tecnicaVonKriesMediana.mediana(imagemOriginal);
+                    ImageIO.write(imagemProcessada, "PNG", new File(txtFieldDiretorioDestino.getText() + "\\out" + count + "VKMediana.png"));
+                }
+                if (chkBoxGrayWorldApproach.isSelected()) {
+                    System.out.println("White Pacth");
+                    imagemProcessada = tecnicaGrayWorldApproach.GWA(imagemOriginal);
+                    ImageIO.write(imagemProcessada, "PNG", new File(txtFieldDiretorioDestino.getText() + "\\out" + count + "GWA.png"));
+                }
+                count++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alerts.showAlert("Error", "Error in processing images", e.getMessage(), AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    public void chkVKMedia() {
+        if (chkBoxVonKriesMedia.isSelected()) {
+            System.out.println("Von Kries Média!");
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        //borderPane.prefWidthProperty().bind(anchorPane.widthProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A LARGURA DO 'BORDER PANE' DE ACORDO COM A LARGURA DO 'ANCHOR PANE'
+        //borderPane.prefHeightProperty().bind(anchorPane.heightProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A ALTURA DO 'BORDER PANE' DE ACORDO COM A ALTURA DO 'ANCHOR PANE'
+
+        borderPane.prefHeightProperty().bind(Main.getMainScene().heightProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A ALTURA DO 'BORDER PANE' DE ACORDO COM A ALTURA DO 'ANCHOR PANE'
+        borderPane.prefWidthProperty().bind(Main.getMainScene().widthProperty());	// AJUSTANDO DE FORMA AUTOMÁTICA A LARGURA DO 'BORDER PANE' DE ACORDO COM A LARGURA DO 'ANCHOR PANE'
+
+        // btProcessar.disableProperty().bind(listViewImagens.itemsProperty().isNull().or(txtFieldDiretorioDestino.textProperty().isEmpty()).or(chkBoxVonKriesMedia.selectedProperty().not().and(chkBoxVonKriesMediana.selectedProperty().not().and(chkBoxGrayWorldApproach.selectedProperty().not()))));
+        btProcessar.disableProperty().bind(listViewImagens.itemsProperty().isNull().or(txtFieldDiretorioOrigem.textProperty().isEmpty()).or(txtFieldDiretorioDestino.textProperty().isEmpty()).or(chkBoxVonKriesMedia.selectedProperty().not().and(chkBoxVonKriesMediana.selectedProperty().not().and(chkBoxGrayWorldApproach.selectedProperty().not()))));
+        
+
+    }
 }

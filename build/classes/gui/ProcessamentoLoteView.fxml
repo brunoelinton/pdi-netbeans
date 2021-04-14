@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProcessamentoLoteViewController">
+<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProcessamentoLoteViewController">
    <children>
       <BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0">
          <top>
@@ -174,7 +174,7 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                                  <children>
-                                    <CheckBox fx:id="chkBoxOutra" mnemonicParsing="false" text="Outra" textFill="#535353">
+                                    <CheckBox fx:id="chkBoxGrayWorldApproach" mnemonicParsing="false" text="Gray World - Approach" textFill="#535353">
                                        <font>
                                           <Font name="System Bold Italic" size="12.0" />
                                        </font>
